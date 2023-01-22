@@ -8,6 +8,9 @@
 import UIKit
 
 class MovieCell: UICollectionViewCell {
+    
+    private let genreToString = MovieGenresDecoder.shared
+    
     private let posterImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -77,7 +80,8 @@ class MovieCell: UICollectionViewCell {
     
     func configure(with movie: Movie) {
         titleLabel.text = movie.title
-        yearGenreLabel.text = "\(movie.releaseYear) - \(movie.genre)"
+        yearGenreLabel.text = "\(movie.releaseYear) - \(genreToString.decodeMovieGenreIDs(idNumbers: movie.genreIds))"
+//        yearGenreLabel.text = "\(String(describing: movie.releaseDate)) - \(String(describing: movie.genres))"
         
         let posterURL = URL(string: "https://image.tmdb.org/t/p/w500\(movie.posterPath)")
         posterImageView.kf.setImage(with: posterURL)

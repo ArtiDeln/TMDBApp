@@ -14,6 +14,7 @@ import Foundation
 class MainTabViewController: UIViewController {
     
     var selectedSections: Set<Int> = [0, 1]
+
     private var popularMovies: [Movie] = []
     private var upcomingMovies: [Movie] = []
     private var filteredMovies: [Movie] = []
@@ -165,6 +166,7 @@ class MainTabViewController: UIViewController {
         alertController.addAction(cancelAction)
         present(alertController, animated: true, completion: nil)
     }
+
 }
 
 extension MainTabViewController: UICollectionViewDelegate,
@@ -202,7 +204,8 @@ extension MainTabViewController: UICollectionViewDelegate,
             guard !upcomingMovies.isEmpty else { return UICollectionViewCell() }
             movie = upcomingMovies[indexPath.item]
         }
-        cell.backgroundColor = .yellow
+
+        cell.backgroundColor = .systemBackground
         cell.layer.cornerRadius = 12
         cell.layer.shadowColor = UIColor.black.cgColor
         cell.layer.shadowOpacity = 0.5
@@ -242,7 +245,23 @@ extension MainTabViewController: UICollectionViewDelegate,
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // Show movie details when a movie is selected
+        let selectedMovie: Movie
+        if isFiltering {
+            selectedMovie = filteredMovies[indexPath.item]
+        } else if indexPath.section == 0 {
+            selectedMovie = popularMovies[indexPath.item]
+        } else {
+            selectedMovie = upcomingMovies[indexPath.item]
+        }
+        showMovieDetails(for: selectedMovie)
+        
+    }
+    
+    func showMovieDetails(for movie: Movie) {
+        let movieDetailsViewController = MovieDetailsViewController()
+        movieDetailsViewController.movie = movie
+        print(movie)
+        navigationController?.pushViewController(movieDetailsViewController, animated: true)
     }
 }
 
