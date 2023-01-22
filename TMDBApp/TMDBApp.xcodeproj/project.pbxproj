@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6ADA7C6F49F520E455E2EB8C /* Pods_TMDBApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D60FA3A52DF85CE3935CB047 /* Pods_TMDBApp.framework */; };
+		9A07C172297C33CD003F5157 /* MainScreenModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A07C171297C33CD003F5157 /* MainScreenModels.swift */; };
 		9A0BAD89297841EE003FE7F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0BAD88297841EE003FE7F1 /* AppDelegate.swift */; };
 		9A0BAD8B297841EE003FE7F1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0BAD8A297841EE003FE7F1 /* SceneDelegate.swift */; };
 		9A0BAD8D297841EE003FE7F1 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0BAD8C297841EE003FE7F1 /* SplashViewController.swift */; };
@@ -17,10 +18,13 @@
 		9ACB5BAC297A357D00D0B892 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACB5BAB297A357D00D0B892 /* MainViewController.swift */; };
 		9ACB5BAF297A35EE00D0B892 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACB5BAE297A35EE00D0B892 /* FavoritesViewController.swift */; };
 		9ACB5BB1297A361400D0B892 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACB5BB0297A361400D0B892 /* SettingsViewController.swift */; };
+		9AFB9FFC297CA3F800D810DB /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFB9FFB297CA3F800D810DB /* MovieCell.swift */; };
+		9AFB9FFE297CBDA300D810DB /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFB9FFD297CBDA300D810DB /* SectionHeader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0B994E5C5CEB673DDDFEE529 /* Pods-TMDBApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMDBApp.release.xcconfig"; path = "Target Support Files/Pods-TMDBApp/Pods-TMDBApp.release.xcconfig"; sourceTree = "<group>"; };
+		9A07C171297C33CD003F5157 /* MainScreenModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenModels.swift; sourceTree = "<group>"; };
 		9A0BAD85297841EE003FE7F1 /* TMDBApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMDBApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A0BAD88297841EE003FE7F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9A0BAD8A297841EE003FE7F1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -32,6 +36,8 @@
 		9ACB5BAB297A357D00D0B892 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		9ACB5BAE297A35EE00D0B892 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		9ACB5BB0297A361400D0B892 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		9AFB9FFB297CA3F800D810DB /* MovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
+		9AFB9FFD297CBDA300D810DB /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		B25D7CEB7CA0B7F28DCABBBB /* Pods-TMDBApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMDBApp.debug.xcconfig"; path = "Target Support Files/Pods-TMDBApp/Pods-TMDBApp.debug.xcconfig"; sourceTree = "<group>"; };
 		D60FA3A52DF85CE3935CB047 /* Pods_TMDBApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TMDBApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -63,6 +69,23 @@
 				D60FA3A52DF85CE3935CB047 /* Pods_TMDBApp.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9A07C16F297C339A003F5157 /* MainScreen */ = {
+			isa = PBXGroup;
+			children = (
+				9A07C170297C33A9003F5157 /* Models */,
+				9AFB9FF9297C962200D810DB /* ViewControllers */,
+			);
+			path = MainScreen;
+			sourceTree = "<group>";
+		};
+		9A07C170297C33A9003F5157 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9A07C171297C33CD003F5157 /* MainScreenModels.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		9A0BAD7C297841EE003FE7F1 = {
@@ -100,7 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				9ACB5BA82979F65F00D0B892 /* HomeViewController.swift */,
-				9ACB5BAB297A357D00D0B892 /* MainViewController.swift */,
+				9A07C16F297C339A003F5157 /* MainScreen */,
 				9ACB5BAE297A35EE00D0B892 /* FavoritesViewController.swift */,
 				9ACB5BB0297A361400D0B892 /* SettingsViewController.swift */,
 			);
@@ -114,6 +137,16 @@
 				9A0BAD93297841F2003FE7F1 /* LaunchScreen.storyboard */,
 			);
 			path = LaunchSpashScreen;
+			sourceTree = "<group>";
+		};
+		9AFB9FF9297C962200D810DB /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				9ACB5BAB297A357D00D0B892 /* MainViewController.swift */,
+				9AFB9FFD297CBDA300D810DB /* SectionHeader.swift */,
+				9AFB9FFB297CA3F800D810DB /* MovieCell.swift */,
+			);
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -251,6 +284,9 @@
 			files = (
 				9A0BAD8D297841EE003FE7F1 /* SplashViewController.swift in Sources */,
 				9A0BAD89297841EE003FE7F1 /* AppDelegate.swift in Sources */,
+				9AFB9FFE297CBDA300D810DB /* SectionHeader.swift in Sources */,
+				9AFB9FFC297CA3F800D810DB /* MovieCell.swift in Sources */,
+				9A07C172297C33CD003F5157 /* MainScreenModels.swift in Sources */,
 				9ACB5BB1297A361400D0B892 /* SettingsViewController.swift in Sources */,
 				9A0BAD8B297841EE003FE7F1 /* SceneDelegate.swift in Sources */,
 				9ACB5BA92979F65F00D0B892 /* HomeViewController.swift in Sources */,
@@ -408,7 +444,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = butorin.TMDBApp;
+				PRODUCT_BUNDLE_IDENTIFIER = ButorinArtyom.TMDBApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -437,7 +473,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = butorin.TMDBApp;
+				PRODUCT_BUNDLE_IDENTIFIER = ButorinArtyom.TMDBApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

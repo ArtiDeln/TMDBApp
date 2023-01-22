@@ -19,7 +19,7 @@ class HomeViewController: UITabBarController {
         self.tabBar.isTranslucent = false
         self.tabBar.barTintColor = .systemBackground
         
-        let mainVC = createNavController(viewController: MainViewController(),
+        let mainVC = createNavController(viewController: MainTabViewController(),
                                          itemName: "Main",
                                          iconName: "film")
         let favoritesVC = createNavController(viewController: FavoritesViewController(),
