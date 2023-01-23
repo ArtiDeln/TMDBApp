@@ -123,13 +123,12 @@
 		9A0BAD87297841EE003FE7F1 /* TMDBApp */ = {
 			isa = PBXGroup;
 			children = (
-				9AAA4B91297E00920068DE5F /* Constants.swift */,
-				9ACB5BAA297A0F9C00D0B892 /* TabBar */,
 				9A0BAD88297841EE003FE7F1 /* AppDelegate.swift */,
 				9A0BAD8A297841EE003FE7F1 /* SceneDelegate.swift */,
-				9A0BAD91297841F2003FE7F1 /* Assets.xcassets */,
+				9AAA4B91297E00920068DE5F /* Constants.swift */,
+				9ACB5BAA297A0F9C00D0B892 /* TabBar */,
 				9ACB5BB2297AE58800D0B892 /* LaunchSpashScreen */,
-				9A0BAD96297841F2003FE7F1 /* Info.plist */,
+				9AAA4B97297E19DB0068DE5F /* Supporting Files */,
 			);
 			path = TMDBApp;
 			sourceTree = "<group>";
@@ -166,6 +165,15 @@
 				9AAA4B84297D8E680068DE5F /* MovieDetailsViewController.swift */,
 			);
 			path = MovieDetailsVC;
+			sourceTree = "<group>";
+		};
+		9AAA4B97297E19DB0068DE5F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9A0BAD91297841F2003FE7F1 /* Assets.xcassets */,
+				9A0BAD96297841F2003FE7F1 /* Info.plist */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		9ACB5BAA297A0F9C00D0B892 /* TabBar */ = {
