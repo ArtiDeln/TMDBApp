@@ -14,14 +14,18 @@ class HeaderView: UICollectionReusableView {
         label.textColor = .black
         return label
     }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(16)
-            make.centerY.equalToSuperview()
+        
+        addSubview(self.titleLabel)
+        
+        self.titleLabel.snp.makeConstraints {
+            $0.left.equalToSuperview().offset(16)
+            $0.centerY.equalToSuperview()
         }
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

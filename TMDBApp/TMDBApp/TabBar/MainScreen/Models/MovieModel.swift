@@ -13,7 +13,7 @@ struct MovieData: Decodable {
     let results: [Movie]
 }
 
-struct Movie: Decodable {
+struct Movie: Decodable, Equatable, Encodable {
     let id: Int
     let title: String
     let posterPath: String

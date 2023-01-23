@@ -8,25 +8,73 @@
 import UIKit
 
 class FavoritesViewController: UIViewController {
-//    var likedMovies: [Movie] = []
-//    private let collectionView = UICollectionView(...)
-//
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        collectionView.dataSource = self
-//        // setup collection view and layout
-//    }
+    
+    private let collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(MovieCell.self, forCellWithReuseIdentifier: "MovieCell")
+        return collectionView
+    }()
+    
+    //    var favorites: [Movie] = []
+    let mainTabVC = MainTabViewController()
+    var favorites: [Movie] {
+        get {
+            return mainTabVC.favoritedMovies
+        }
+        set {
+            mainTabVC.favoritedMovies = newValue
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if favorites.isEmpty {
+            let label = UILabel()
+            label.text = "No favorites yet"
+            label.textAlignment = .center
+            collectionView.backgroundView = label
+        }
+        
+        favorites = mainTabVC.favoritedMovies
+        
+        view.addSubview(collectionView)
+        collectionView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
+        collectionView.backgroundColor = .systemBackground
+        collectionView.register(MovieCell.self, forCellWithReuseIdentifier: "MovieCell")
+        collectionView.register(HeaderView.self,
+                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                                withReuseIdentifier: "HeaderView")
+        //        collectionView.refreshControl = refreshControl
+        if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.headerReferenceSize = CGSize(width: view.frame.width, height: 50)
+        }
+    }
 }
 
-//extension FavoritesViewController: UICollectionViewDataSource {
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return likedMovies.count
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(...) as! MovieCell
-//        let movie = likedMovies[indexPath.item]
-//        cell.configure(with: movie)
-//        return cell
-//    }
-//}
+extension FavoritesViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return favorites.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if favorites.isEmpty {
+            return UICollectionViewCell()
+        }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCell",
+                                                            for: indexPath) as? MovieCell else {
+            return UICollectionViewCell()
+        }
+        let movie = favorites[indexPath.item]
+        cell.configure(with: movie)
+        return cell
+    }
+}
