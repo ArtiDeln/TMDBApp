@@ -28,7 +28,6 @@ class MovieCell: UICollectionViewCell {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 14)
         label.numberOfLines = 1
         return label
@@ -36,7 +35,6 @@ class MovieCell: UICollectionViewCell {
     
     private let yearGenreLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 12)
         label.numberOfLines = 1
         return label
@@ -91,21 +89,7 @@ class MovieCell: UICollectionViewCell {
     }
     
     @objc func likeButtonTapped() {
-        if let index = self.favoritedMovies.firstIndex(where: { $0.id == movie.id }) {
-            print("Movie \(movie.title) removed")
-            self.heartButton.tintColor = .red
-            self.favoritedMovies.remove(at: index)
-        } else {
-            print("Movie \(movie.title) added")
-            self.heartButton.tintColor = .green
-            self.favoritedMovies.append(movie)
-        }
-        do {
-            let data = try PropertyListEncoder().encode(self.favoritedMovies)
-            UserDefaults.standard.set(data, forKey: "favorites")
-        } catch {
-            print("Error saving favorites: \(error)")
-        }
+        
     }
 
     func configure(with movie: Movie) {
@@ -115,6 +99,7 @@ class MovieCell: UICollectionViewCell {
         self.posterImageView.kf.setImage(with: posterURL)
         self.titleLabel.text = movie.title
         self.yearGenreLabel.text = "\(movie.releaseYear) - \(genre)"
+        self.heartButton.setImage(UIImage(systemName: movie.isLiked ? "heart.fill" : "heart"), for: .normal)
                 
         self.movie = movie
     }

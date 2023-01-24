@@ -16,7 +16,6 @@ class FavoritesViewController: UIViewController {
         return collectionView
     }()
     
-    //    var favorites: [Movie] = []
     let mainTabVC = MainTabViewController()
     var favorites: [Movie] {
         get {
@@ -57,6 +56,14 @@ class FavoritesViewController: UIViewController {
             flowLayout.headerReferenceSize = CGSize(width: view.frame.width, height: 50)
         }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        let movieCell = MovieCell()
+        super.viewWillAppear(animated)
+        self.favorites = movieCell.favoritedMovies
+        self.collectionView.reloadData()
+    }
+
 }
 
 extension FavoritesViewController: UICollectionViewDelegate, UICollectionViewDataSource {

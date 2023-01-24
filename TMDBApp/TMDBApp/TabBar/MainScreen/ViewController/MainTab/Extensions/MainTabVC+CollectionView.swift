@@ -12,12 +12,21 @@ extension MainTabViewController: UICollectionViewDelegate,
                                  UICollectionViewDataSource,
                                  UICollectionViewDelegateFlowLayout {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return self.selectedSections.count
+        if isSearching {
+            return 1
+        } else {
+            return self.selectedSections.count
+        }
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if self.isFiltering {
-            return self.filteredMovies.count
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
+        if !selectedSections.contains(section) {
+            return 0
+        }
+
+        if self.isSearching {
+            return self.searchingMovies.count
         } else if section == 0 {
             return self.popularMovies.count
         } else {
@@ -32,10 +41,17 @@ extension MainTabViewController: UICollectionViewDelegate,
             return UICollectionViewCell()
         }
         let movie: Movie
-        if self.isFiltering {
-            guard !self.filteredMovies.isEmpty else { return UICollectionViewCell() }
-            movie = self.filteredMovies[indexPath.item]
+        
+        if !selectedSections.contains(indexPath.section) {
+            return UICollectionViewCell()
+        }
+        if self.isSearching {
+            guard !self.searchingMovies.isEmpty else { return UICollectionViewCell() }
+            movie = self.searchingMovies[indexPath.item]
             print("Filtering testing")
+        } else if self.test == 1 {
+            guard !self.upcomingMovies.isEmpty else { return UICollectionViewCell() }
+            movie = self.upcomingMovies[indexPath.item]
         } else if indexPath.section == 0 {
             guard !self.popularMovies.isEmpty else { return UICollectionViewCell() }
             movie = self.popularMovies[indexPath.item]
@@ -73,6 +89,9 @@ extension MainTabViewController: UICollectionViewDelegate,
     func collectionView(_ collectionView: UICollectionView,
                         viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
+        if !selectedSections.contains(indexPath.section) {
+            return UICollectionReusableView()
+        }
         if kind == UICollectionView.elementKindSectionHeader {
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                                    withReuseIdentifier: "HeaderView",
@@ -80,7 +99,11 @@ extension MainTabViewController: UICollectionViewDelegate,
                 print("viewForSupplementaryElementOfKind = Error")
                 return UICollectionReusableView()
             }
-            headerView.titleLabel.text = indexPath.section == 0 ? "Popular Movies" : "Upcoming Movies"
+            if isSearching {
+                headerView.titleLabel.text = "Search result"
+            } else {
+                headerView.titleLabel.text = indexPath.section == 0 ? "Popular Movies" : "Upcoming Movies"
+            }
             return headerView
         }
         return UICollectionReusableView()
@@ -89,8 +112,8 @@ extension MainTabViewController: UICollectionViewDelegate,
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
         let selectedMovie: Movie
-        if isFiltering {
-            selectedMovie = filteredMovies[indexPath.item]
+        if isSearching {
+            selectedMovie = searchingMovies[indexPath.item]
         } else if indexPath.section == 0 {
             selectedMovie = popularMovies[indexPath.item]
         } else {
@@ -104,5 +127,9 @@ extension MainTabViewController: UICollectionViewDelegate,
         let movieDetailsViewController = MovieDetailsViewController()
         movieDetailsViewController.movie = movie
         navigationController?.pushViewController(movieDetailsViewController, animated: true)
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.searchBar.resignFirstResponder()
     }
 }
