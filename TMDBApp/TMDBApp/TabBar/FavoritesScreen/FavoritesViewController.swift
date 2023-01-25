@@ -11,27 +11,6 @@ import Alamofire
 class FavoritesViewController: UIViewController {
     
     let mainTabVC = MainTabViewController()
-//    var favorites: [Movie] {
-//        get {
-//            let data = UserDefaults.standard.data(forKey: "favoriets")
-//            var favorites = MovieData.init(results: [Movie]())
-//            if (data != nil) {
-//                do {
-//                    favorites = try JSONDecoder().decode(MovieData.self, from: data!)
-//                } catch {
-//                    print("saved data parsing error")
-//                }
-//            }
-//            return favorites.results
-//        }
-//        set {
-//            do {
-//                try UserDefaults.standard.set(JSONEncoder().encode(MovieData.init(results: newValue)),forKey: "favoriets")
-//            } catch {
-//                print("writing favorites error")
-//            }
-//        }
-//    }
     
     var favorites: [Movie] {
            get {
@@ -85,8 +64,6 @@ class FavoritesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        print(favorites)
-  
         self.initView()
         self.constraints()
         self.collectionViewSettings()
@@ -130,8 +107,6 @@ class FavoritesViewController: UIViewController {
     
     @objc private func refreshCollectionView() {
         self.collectionView.reloadData()
-        print("ViewWillAppear")
-        print("Favorites is", favorites)
         if favorites.isEmpty {
             favoritesIsEmptylabel.isHidden = false
             collectionView.backgroundView = favoritesIsEmptylabel

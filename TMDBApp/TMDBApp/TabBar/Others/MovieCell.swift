@@ -105,7 +105,6 @@ class MovieCell: UICollectionViewCell {
                     try UserDefaults.standard.set(JSONEncoder()
                         .encode(MovieData.init(results: newResults)),
                                                   forKey: "favoriets")
-                    print(newResults)
                     self.heartButton.tintColor = .white
                 } else {
                     var newResults = favorites.results
@@ -113,7 +112,6 @@ class MovieCell: UICollectionViewCell {
                     try UserDefaults.standard.set(JSONEncoder()
                         .encode(MovieData.init(results: newResults)),
                                                   forKey: "favoriets")
-                    print(newResults)
                     self.heartButton.tintColor = .red
                 }
             } catch {

@@ -11,9 +11,7 @@ import UIKit
 extension MainTabViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        print(searchText)
         self.searchMovies(with: searchText)
-//        print(searchingMovies)
         if searchText .isEmpty {
             searchBar.showsCancelButton = false
             self.isSearching = false
@@ -35,12 +33,4 @@ extension MainTabViewController: UISearchBarDelegate {
         self.loadingIndicator.stopAnimating()
         self.collectionView.reloadData()
     }
-    
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar, searchText: String) {
-////        if let searchText = searchBar.text {
-////            self.searchMovies(with: searchText)
-////        }
-//        print("Searching Clicked!!!!!!!!!!!!!!")
-//    }
-
 }
