@@ -31,15 +31,4 @@ struct Movie: Decodable, Equatable, Encodable {
         case overview
         case voteAverage = "vote_average"
     }
-//    init(from decoder: Decoder) throws {
-//        let container = try decoder.container(keyedBy: CodingKeys.self)
-//        id = try container.decode(Int.self, forKey: .id)
-//        title = try container.decode(String.self, forKey: .title)
-//        posterPath = try container.decode(String.self, forKey: .posterPath)
-//        let date = try container.decode(String.self, forKey: .releaseYear)
-//        releaseYear = String(date.prefix(4))
-//        genreIds = try container.decode([Int].self, forKey: .genreIds)
-//        overview = try container.decode(String.self, forKey: .overview)
-//        voteAverage = try container.decode(Double.self, forKey: .voteAverage)
-//    }
 }

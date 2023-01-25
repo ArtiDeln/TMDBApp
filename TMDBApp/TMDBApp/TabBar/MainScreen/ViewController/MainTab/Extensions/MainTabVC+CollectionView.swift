@@ -32,17 +32,6 @@ extension MainTabViewController: UICollectionViewDelegate,
     
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-//        if !selectedSections.contains(section) {
-//            return 0
-//        }
-//
-//        if self.isSearching {
-//            return self.searchingMovies.count
-//        } else if section == 0 {
-//            return self.popularMovies.count
-//        } else {
-//            return self.upcomingMovies.count
-//        }
         
         switch(isFiltering,
                isSearching,
@@ -67,8 +56,7 @@ extension MainTabViewController: UICollectionViewDelegate,
         }
         let movie: Movie
         
-        switch(
-               isSearching,
+        switch(isSearching,
                UserDefaults.standard.bool(forKey: "section1SelectedKey"),
                UserDefaults.standard.bool(forKey: "section2SelectedKey")) {
         case (true, _, _):
@@ -129,12 +117,6 @@ extension MainTabViewController: UICollectionViewDelegate,
                 print("viewForSupplementaryElementOfKind = Error")
                 return UICollectionReusableView()
             }
-            
-//            if isSearching {
-//                headerView.titleLabel.text = "Search result"
-//            } else {
-//                headerView.titleLabel.text = indexPath.section == 0 ? "Popular Movies" : "Upcoming Movies"
-//            }
             
             switch (isSearching,
                     UserDefaults.standard.bool(forKey: "section1SelectedKey"),

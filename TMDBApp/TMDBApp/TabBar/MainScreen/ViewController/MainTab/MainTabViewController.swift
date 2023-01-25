@@ -21,7 +21,6 @@ class MainTabViewController: UIViewController {
     var upcomingMovies: [Movie] = []
     var searchingMovies: [Movie] = []
     
-    var test = Int()
     var isFiltering: Bool {
            return UserDefaults.standard.bool(forKey: "section1SelectedKey")
                 || UserDefaults.standard.bool(forKey: "section2SelectedKey")
@@ -62,14 +61,13 @@ class MainTabViewController: UIViewController {
         self.constraints()
         self.configureNavBar()
         self.collectionViewSettings()
-        self.fetchMovies()
         
         self.loadingIndicator.startAnimating()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.fetchMovies()
+        self.checkConnection()
         self.collectionView.reloadData()
     }
     
@@ -118,7 +116,7 @@ class MainTabViewController: UIViewController {
     func searchMovies(with searchText: String) {
         self.loadingIndicator.startAnimating()
         isSearching = true
-        let url = "https://api.themoviedb.org/3/search/movie"
+        let url = Constants.searchingMovieURL
         let parameters: Parameters = ["api_key": Constants.apiKey, "query": searchText]
         AF.request(url, parameters: parameters).responseDecodable(of: MovieData.self,
                                                                   decoder: JSONDecoder()) { (response) in
@@ -131,8 +129,25 @@ class MainTabViewController: UIViewController {
         self.loadingIndicator.stopAnimating()
     }
     
-    // MARK: - @obj funcs
+    private func checkConnection() {
+        let url = Constants.mainSiteURL
+        AF.request(url).response { response in
+            if response.error != nil {
+                let alert = UIAlertController(title: "Error",
+                                              message: Constants.errorConnection,
+                                              preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {_ in
+                    exit(0)
+                }))
+                self.present(alert, animated: true)
+            } else {
+                self.fetchMovies()
+            }
+        }
+    }
     
+    // MARK: - @obj funcs
+
     @objc func fetchMovies() {
         loadingIndicator.startAnimating()
         let group = DispatchGroup()
