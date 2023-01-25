@@ -127,12 +127,11 @@ class MovieDetailsViewController: UIViewController {
     
     private func configureMovieDetails() {
         self.titleLabel.text = movie.title
-        self.releaseDateLabel.text = "Release date: \(movie.releaseYear)"
+        self.releaseDateLabel.text = "Release date: \(movie.releaseDate.prefix(4))"
         self.genresLabel.text = "Genres: \(genreToString.decodeMovieGenreIDs(idNumbers: movie.genreIds))"
         self.overviewTextView.text = "Overview: \(movie.overview)"
         self.voteAverageLabel.text = "Vote average: \(movie.voteAverage)"
-        
-        let posterPath = "\(Constants.basePosterURL)\(movie.posterPath)"
+        let posterPath = "\(Constants.basePosterURL)\(movie.posterPath ?? "")"
         let url = URL(string: posterPath)
         self.moviePosterImageView.kf.setImage(with: url)
     }

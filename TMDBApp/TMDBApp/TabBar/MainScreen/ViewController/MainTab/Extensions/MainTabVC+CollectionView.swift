@@ -11,26 +11,51 @@ import UIKit
 extension MainTabViewController: UICollectionViewDelegate,
                                  UICollectionViewDataSource,
                                  UICollectionViewDelegateFlowLayout {
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        if isSearching {
+        
+        switch (isSearching,
+                UserDefaults.standard.bool(forKey: "section1SelectedKey"),
+                UserDefaults.standard.bool(forKey: "section2SelectedKey")) {
+        case (true, _, _):
             return 1
-        } else {
-            return self.selectedSections.count
+        case (false, true, false):
+            return 1
+        case (false, false, true):
+            return 1
+        case (false, true, true):
+            return 2
+        default:
+            return 2
         }
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        if !selectedSections.contains(section) {
+//        if !selectedSections.contains(section) {
+//            return 0
+//        }
+//
+//        if self.isSearching {
+//            return self.searchingMovies.count
+//        } else if section == 0 {
+//            return self.popularMovies.count
+//        } else {
+//            return self.upcomingMovies.count
+//        }
+        
+        switch(isFiltering,
+               isSearching,
+               UserDefaults.standard.bool(forKey: "section1SelectedKey"),
+               UserDefaults.standard.bool(forKey: "section2SelectedKey")) {
+        case (_, true, _, _): return self.searchingMovies.count
+        case (false, false, _, _): return 0
+        case (true, _, true, false): return self.popularMovies.count
+        case (true, _, false, true): return self.upcomingMovies.count
+        case (_, false, false, false):
             return 0
-        }
-
-        if self.isSearching {
-            return self.searchingMovies.count
-        } else if section == 0 {
+        case (true, false, true, true):
             return self.popularMovies.count
-        } else {
-            return self.upcomingMovies.count
         }
     }
     
@@ -42,22 +67,29 @@ extension MainTabViewController: UICollectionViewDelegate,
         }
         let movie: Movie
         
-        if !selectedSections.contains(indexPath.section) {
-            return UICollectionViewCell()
-        }
-        if self.isSearching {
+        switch(
+               isSearching,
+               UserDefaults.standard.bool(forKey: "section1SelectedKey"),
+               UserDefaults.standard.bool(forKey: "section2SelectedKey")) {
+        case (true, _, _):
             guard !self.searchingMovies.isEmpty else { return UICollectionViewCell() }
             movie = self.searchingMovies[indexPath.item]
-            print("Filtering testing")
-        } else if self.test == 1 {
-            guard !self.upcomingMovies.isEmpty else { return UICollectionViewCell() }
-            movie = self.upcomingMovies[indexPath.item]
-        } else if indexPath.section == 0 {
+        case (false, true, false):
             guard !self.popularMovies.isEmpty else { return UICollectionViewCell() }
             movie = self.popularMovies[indexPath.item]
-        } else {
+        case (false, false, true):
             guard !self.upcomingMovies.isEmpty else { return UICollectionViewCell() }
             movie = self.upcomingMovies[indexPath.item]
+        case (false, true, true):
+            if indexPath.section == 0 {
+                guard !self.popularMovies.isEmpty else { return UICollectionViewCell() }
+                movie = self.popularMovies[indexPath.item]
+            } else {
+                guard !self.upcomingMovies.isEmpty else { return UICollectionViewCell() }
+                movie = self.upcomingMovies[indexPath.item]
+            }
+        case (false, _, _):
+            return UICollectionViewCell()
         }
         
         cell.backgroundColor = .systemBackground
@@ -67,8 +99,6 @@ extension MainTabViewController: UICollectionViewDelegate,
         cell.layer.shadowOffset = CGSize(width: 0, height: 2)
         cell.layer.shadowRadius = 2
         cell.configure(with: movie)
-        
-        self.favoritedMovies = cell.favoritedMovies
         
         return cell
     }
@@ -99,10 +129,31 @@ extension MainTabViewController: UICollectionViewDelegate,
                 print("viewForSupplementaryElementOfKind = Error")
                 return UICollectionReusableView()
             }
-            if isSearching {
-                headerView.titleLabel.text = "Search result"
-            } else {
-                headerView.titleLabel.text = indexPath.section == 0 ? "Popular Movies" : "Upcoming Movies"
+            
+//            if isSearching {
+//                headerView.titleLabel.text = "Search result"
+//            } else {
+//                headerView.titleLabel.text = indexPath.section == 0 ? "Popular Movies" : "Upcoming Movies"
+//            }
+            
+            switch (isSearching,
+                    UserDefaults.standard.bool(forKey: "section1SelectedKey"),
+                    UserDefaults.standard.bool(forKey: "section2SelectedKey")) {
+            case (true, _, _): headerView.titleLabel.text = "Search result"
+            case (_, true, false): headerView.titleLabel.text = "Popular Movies"
+            case (_, false, true): headerView.titleLabel.text = "Upcoming Movies"
+            case (_, true, true):
+                if indexPath.section == 0 {
+                    headerView.titleLabel.text = "Popular Movies"
+                } else {
+                    headerView.titleLabel.text = "Upcoming Movies"
+                }
+            case (false, false, false):
+                if indexPath.section == 0 {
+                    headerView.titleLabel.text = "Select the type of films in the \"Filter\" button"
+                } else {
+                    headerView.titleLabel.text = ""
+                }
             }
             return headerView
         }

@@ -11,16 +11,19 @@ class HeaderView: UICollectionReusableView {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17, weight: .medium)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.sizeToFit()
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        addSubview(self.titleLabel)
+        self.addSubview(self.titleLabel)
         
         self.titleLabel.snp.makeConstraints {
-            $0.left.equalToSuperview().offset(16)
+            $0.left.right.equalToSuperview().offset(16)
             $0.centerY.equalToSuperview()
         }
     }
