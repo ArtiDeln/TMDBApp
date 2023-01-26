@@ -145,15 +145,24 @@ extension MainTabViewController: UICollectionViewDelegate,
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
         let selectedMovie: Movie
-        if isSearching {
-            selectedMovie = searchingMovies[indexPath.item]
-        } else if indexPath.section == 0 {
-            selectedMovie = popularMovies[indexPath.item]
-        } else {
-            selectedMovie = upcomingMovies[indexPath.item]
-        }
-        self.showMovieDetails(for: selectedMovie)
         
+        switch (isSearching,
+                UserDefaults.standard.bool(forKey: "section1SelectedKey"),
+                UserDefaults.standard.bool(forKey: "section2SelectedKey")) {
+        case (true, _, _): selectedMovie = searchingMovies[indexPath.item]
+        case (false, true, false): selectedMovie = popularMovies[indexPath.item]
+        case (false, false, true): selectedMovie = upcomingMovies[indexPath.item]
+        case (false, true, true):
+            if indexPath.section == 0 {
+                selectedMovie = popularMovies[indexPath.item]
+            } else {
+                selectedMovie = upcomingMovies[indexPath.item]
+            }
+        case (false, false, false):
+            selectedMovie = popularMovies[indexPath.item]
+        }
+        
+        self.showMovieDetails(for: selectedMovie)
     }
     
     func showMovieDetails(for movie: Movie) {
