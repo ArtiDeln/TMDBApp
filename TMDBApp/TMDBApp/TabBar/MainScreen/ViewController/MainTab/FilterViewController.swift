@@ -10,9 +10,35 @@ import UIKit
 class FilterViewController: UIViewController {
     
     private(set) lazy var mainTabVC = MainTabViewController()
+    
+    // MARK: GUI
+    
     private(set) lazy var stackView = UIStackView()
-    private(set) lazy var popularMoviesToggle = UISwitch()
-    private(set) lazy var upcomingMoviesToggle = UISwitch()
+    
+    private(set) lazy var popularSectionLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Popular"
+        return label
+    }()
+    
+    private(set) lazy var upcomingSectionLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Upcoming"
+        return label
+    }()
+    
+    private(set) lazy var popularMoviesToggle: UISwitch = {
+        let toggle = UISwitch()
+        toggle.addTarget(self, action: #selector(popularSectionToggleChanged), for: .valueChanged)
+        return toggle
+    }()
+    
+    private(set) lazy var upcomingMoviesToggle: UISwitch = {
+        let toggle = UISwitch()
+        toggle.addTarget(self, action: #selector(upcomingSectionToggleChanged), for: .valueChanged)
+        return toggle
+    }()
+    
     private(set) lazy var doneButton: UIButton = {
         let button = UIButton()
         button.setTitle("Done", for: .normal)
@@ -23,57 +49,49 @@ class FilterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupStackView()
-        self.setupToggleButtons()
-        self.setupDoneButton()
-        self.constraints()
+        
         self.view.backgroundColor = .systemBackground
         
-        self.popularMoviesToggle.isOn = UserDefaults.standard.bool(forKey: "section1SelectedKey")
-        self.upcomingMoviesToggle.isOn = UserDefaults.standard.bool(forKey: "section2SelectedKey")
-    }
-    
-    private func setupStackView() {
-        stackView.axis = .vertical
-        stackView.spacing = 10
-        view.addSubview(stackView)
-    }
-    
-    private func setupToggleButtons() {
-        self.popularMoviesToggle.addTarget(self, action: #selector(section1ToggleChanged), for: .valueChanged)
-        let section1Label = UILabel()
-        section1Label.text = "Popular"
-        stackView.addArrangedSubview(section1Label)
-        stackView.addArrangedSubview(popularMoviesToggle)
+        self.initView()
+        self.constraints()
         
-        self.upcomingMoviesToggle.addTarget(self, action: #selector(section2ToggleChanged), for: .valueChanged)
-        let section2Label = UILabel()
-        section2Label.text = "Upcoming"
-        stackView.addArrangedSubview(section2Label)
-        stackView.addArrangedSubview(upcomingMoviesToggle)
+        self.popularMoviesToggle.isOn = UserDefaults.standard.bool(forKey: Constants.popularKey)
+        self.upcomingMoviesToggle.isOn = UserDefaults.standard.bool(forKey: Constants.upcomingKey)
     }
-    private func setupDoneButton() {
+    
+    private func initView() {
+        self.stackView.axis = .vertical
+        self.stackView.spacing = 10
+        
+        self.view.addSubview(self.stackView)
+        
+        self.stackView.addArrangedSubview(self.popularSectionLabel)
+        self.stackView.addArrangedSubview(self.popularMoviesToggle)
+        
+        self.stackView.addArrangedSubview(self.upcomingSectionLabel)
+        self.stackView.addArrangedSubview(self.upcomingMoviesToggle)
+        
+        self.stackView.addArrangedSubview(self.doneButton)
+    }
 
-        stackView.addArrangedSubview(doneButton)
+    @objc private func popularSectionToggleChanged() {
+        UserDefaults.standard.set(self.popularMoviesToggle.isOn, forKey: Constants.popularKey)
     }
+    
+    @objc private func upcomingSectionToggleChanged() {
+        UserDefaults.standard.set(self.upcomingMoviesToggle.isOn, forKey: Constants.upcomingKey)
+    }
+    
+    @objc private func doneButtonTapped() {
+        self.mainTabVC.fetchMovies()
+        dismiss(animated: true)
+    }
+    
     private func constraints() {
-        stackView.snp.makeConstraints {
+        self.stackView.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
             $0.centerY.equalToSuperview()
         }
     }
-    @objc private func section1ToggleChanged() {
-        UserDefaults.standard.set(popularMoviesToggle.isOn, forKey: "section1SelectedKey")
-    }
-    
-    @objc private func section2ToggleChanged() {
-        UserDefaults.standard.set(upcomingMoviesToggle.isOn, forKey: "section2SelectedKey")
-    }
-
-@objc private func doneButtonTapped() {
-    self.mainTabVC.fetchMovies()
-    dismiss(animated: true)
-}
-
 }
