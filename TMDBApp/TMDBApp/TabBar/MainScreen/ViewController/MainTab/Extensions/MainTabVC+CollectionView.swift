@@ -13,10 +13,9 @@ extension MainTabViewController: UICollectionViewDelegate,
                                  UICollectionViewDelegateFlowLayout {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        
-        switch (isSearching,
-                UserDefaults.standard.bool(forKey: "section1SelectedKey"),
-                UserDefaults.standard.bool(forKey: "section2SelectedKey")) {
+        switch (self.isSearching,
+                UserDefaults.standard.bool(forKey: Constants.popularKey),
+                UserDefaults.standard.bool(forKey: Constants.upcomingKey)) {
         case (true, _, _):
             return 1
         case (false, true, false):
@@ -33,18 +32,14 @@ extension MainTabViewController: UICollectionViewDelegate,
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
         
-        switch(isFiltering,
-               isSearching,
-               UserDefaults.standard.bool(forKey: "section1SelectedKey"),
-               UserDefaults.standard.bool(forKey: "section2SelectedKey")) {
-        case (_, true, _, _): return self.searchingMovies.count
-        case (false, false, _, _): return 0
-        case (true, _, true, false): return self.popularMovies.count
-        case (true, _, false, true): return self.upcomingMovies.count
-        case (_, false, false, false):
-            return 0
-        case (true, false, true, true):
-            return self.popularMovies.count
+        switch(isSearching,
+               UserDefaults.standard.bool(forKey: Constants.popularKey),
+               UserDefaults.standard.bool(forKey: Constants.upcomingKey)) {
+        case (true, _, _): return self.searchingMovies.count
+        case (false, false, false): return 0
+        case (_, true, false): return self.popularMovies.count
+        case (_, false, true): return self.upcomingMovies.count
+        case (false, true, true): return self.popularMovies.count
         }
     }
     
@@ -57,8 +52,8 @@ extension MainTabViewController: UICollectionViewDelegate,
         let movie: Movie
         
         switch(isSearching,
-               UserDefaults.standard.bool(forKey: "section1SelectedKey"),
-               UserDefaults.standard.bool(forKey: "section2SelectedKey")) {
+               UserDefaults.standard.bool(forKey: Constants.popularKey),
+               UserDefaults.standard.bool(forKey: Constants.upcomingKey)) {
         case (true, _, _):
             guard !self.searchingMovies.isEmpty else { return UICollectionViewCell() }
             movie = self.searchingMovies[indexPath.item]
@@ -107,9 +102,6 @@ extension MainTabViewController: UICollectionViewDelegate,
     func collectionView(_ collectionView: UICollectionView,
                         viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
-        if !selectedSections.contains(indexPath.section) {
-            return UICollectionReusableView()
-        }
         if kind == UICollectionView.elementKindSectionHeader {
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                                    withReuseIdentifier: "HeaderView",
@@ -119,8 +111,8 @@ extension MainTabViewController: UICollectionViewDelegate,
             }
             
             switch (isSearching,
-                    UserDefaults.standard.bool(forKey: "section1SelectedKey"),
-                    UserDefaults.standard.bool(forKey: "section2SelectedKey")) {
+                    UserDefaults.standard.bool(forKey: Constants.popularKey),
+                    UserDefaults.standard.bool(forKey: Constants.upcomingKey)) {
             case (true, _, _): headerView.titleLabel.text = "Search result"
             case (_, true, false): headerView.titleLabel.text = "Popular Movies"
             case (_, false, true): headerView.titleLabel.text = "Upcoming Movies"
@@ -147,8 +139,8 @@ extension MainTabViewController: UICollectionViewDelegate,
         let selectedMovie: Movie
         
         switch (isSearching,
-                UserDefaults.standard.bool(forKey: "section1SelectedKey"),
-                UserDefaults.standard.bool(forKey: "section2SelectedKey")) {
+                UserDefaults.standard.bool(forKey: Constants.popularKey),
+                UserDefaults.standard.bool(forKey: Constants.upcomingKey)) {
         case (true, _, _): selectedMovie = searchingMovies[indexPath.item]
         case (false, true, false): selectedMovie = popularMovies[indexPath.item]
         case (false, false, true): selectedMovie = upcomingMovies[indexPath.item]

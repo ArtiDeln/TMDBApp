@@ -18,4 +18,8 @@ struct Constants {
     check the internet connection or use a VPN,
     then restart the application.
     """
+    
+    static let popularKey = "popularSectionSelectedKey"
+    static let upcomingKey = "upcomingSectionSelectedKey"
+    static let favorietsKey = "favorietsKey"
 }

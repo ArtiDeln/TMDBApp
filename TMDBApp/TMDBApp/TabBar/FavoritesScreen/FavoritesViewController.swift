@@ -14,7 +14,7 @@ class FavoritesViewController: UIViewController {
     
     var favorites: [Movie] {
            get {
-               let data = UserDefaults.standard.data(forKey: "favoriets")
+               let data = UserDefaults.standard.data(forKey: Constants.favorietsKey)
                var favorites = MovieData.init(results: [Movie]())
                if data != nil {
                    do {
@@ -28,13 +28,15 @@ class FavoritesViewController: UIViewController {
            set {
                do {
                    try UserDefaults.standard.set(JSONEncoder().encode(MovieData
-                    .init(results: newValue)), forKey: "favoriets")
+                    .init(results: newValue)), forKey: Constants.favorietsKey)
                } catch {
                    print("writing favorites error")
                }
            }
        }
 
+    // MARK: GUI
+    
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)

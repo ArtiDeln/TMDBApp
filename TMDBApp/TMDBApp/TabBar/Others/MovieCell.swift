@@ -9,16 +9,15 @@ import UIKit
 
 class MovieCell: UICollectionViewCell {
     
-    var favoritedMovies: [Movie] = []
-    var movie: Movie!
-    
-    let favoritesVC = FavoritesViewController()
-    
+    private(set) lazy var favoritedMovies: [Movie] = []
+    private(set) lazy var favoritesVC = FavoritesViewController()
     private(set) lazy var genreToString = MovieGenresDecoder.shared
+
+    private(set) var movie: Movie!
     
     // MARK: - GUI
     
-    private let posterImageView: UIImageView = {
+    private(set) lazy var posterImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -26,14 +25,14 @@ class MovieCell: UICollectionViewCell {
         return imageView
     }()
     
-    private let titleLabel: UILabel = {
+    private(set) lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.numberOfLines = 1
         return label
     }()
     
-    private let yearGenreLabel: UILabel = {
+    private(set) lazy var yearGenreLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12)
         label.numberOfLines = 1
@@ -62,35 +61,15 @@ class MovieCell: UICollectionViewCell {
     }
     
     private func initView() {
-        self.contentView.addSubview(posterImageView)
-        self.contentView.addSubview(titleLabel)
-        self.contentView.addSubview(yearGenreLabel)
-        self.contentView.addSubview(heartButton)
-    }
-    
-    func constraints() {
-        posterImageView.snp.makeConstraints {
-            $0.top.left.right.equalToSuperview()
-            $0.height.equalTo(self.contentView.snp.width).offset(40)
-        }
-        titleLabel.snp.makeConstraints {
-            $0.top.equalTo(self.posterImageView.snp.bottom).offset(8)
-            $0.left.right.equalToSuperview().inset(8)
-        }
-        yearGenreLabel.snp.makeConstraints {
-            $0.top.equalTo(self.titleLabel.snp.bottom).offset(4)
-            $0.left.right.equalToSuperview().inset(8)
-        }
-        heartButton.snp.makeConstraints {
-            $0.top.equalTo(self.posterImageView.snp.top).offset(8)
-            $0.right.equalTo(self.posterImageView.snp.right).offset(-8)
-            $0.width.height.equalTo(30)
-        }
+        self.contentView.addSubview(self.posterImageView)
+        self.contentView.addSubview(self.titleLabel)
+        self.contentView.addSubview(self.yearGenreLabel)
+        self.contentView.addSubview(self.heartButton)
     }
     
     @objc func likeButtonTapped() {
         if movie != nil {
-            let data = UserDefaults.standard.data(forKey: "favoriets")
+            let data = UserDefaults.standard.data(forKey: Constants.favorietsKey)
             var favorites = MovieData.init(results: [Movie]())
             if data != nil {
                 do {
@@ -104,14 +83,14 @@ class MovieCell: UICollectionViewCell {
                     let newResults = favorites.results.filter { $0.id != movie.id }
                     try UserDefaults.standard.set(JSONEncoder()
                         .encode(MovieData.init(results: newResults)),
-                                                  forKey: "favoriets")
+                                                  forKey: Constants.favorietsKey)
                     self.heartButton.tintColor = .white
                 } else {
                     var newResults = favorites.results
                     newResults.append(movie)
                     try UserDefaults.standard.set(JSONEncoder()
                         .encode(MovieData.init(results: newResults)),
-                                                  forKey: "favoriets")
+                                                  forKey: Constants.favorietsKey)
                     self.heartButton.tintColor = .red
                 }
             } catch {
@@ -129,7 +108,7 @@ class MovieCell: UICollectionViewCell {
         self.posterImageView.kf.setImage(with: posterURL)
         self.titleLabel.text = movie.title
         self.yearGenreLabel.text = "\(movie.releaseDate.prefix(4)) - \(genre ?? "")"
-        let data = UserDefaults.standard.data(forKey: "favoriets")
+        let data = UserDefaults.standard.data(forKey: Constants.favorietsKey)
         var favorites = MovieData.init(results: [Movie]())
         if data != nil {
             do {
@@ -146,5 +125,25 @@ class MovieCell: UICollectionViewCell {
         }
                 
         self.movie = movie
+    }
+    
+    func constraints() {
+        self.posterImageView.snp.makeConstraints {
+            $0.top.left.right.equalToSuperview()
+            $0.height.equalTo(self.contentView.snp.width).offset(40)
+        }
+        self.titleLabel.snp.makeConstraints {
+            $0.top.equalTo(self.posterImageView.snp.bottom).offset(8)
+            $0.left.right.equalToSuperview().inset(8)
+        }
+        self.yearGenreLabel.snp.makeConstraints {
+            $0.top.equalTo(self.titleLabel.snp.bottom).offset(4)
+            $0.left.right.equalToSuperview().inset(8)
+        }
+        self.heartButton.snp.makeConstraints {
+            $0.top.equalTo(self.posterImageView.snp.top).offset(8)
+            $0.right.equalTo(self.posterImageView.snp.right).offset(-8)
+            $0.width.height.equalTo(30)
+        }
     }
 }

@@ -9,7 +9,9 @@ import UIKit
 
 class MovieDetailsViewController: UIViewController {
     
-    private let genreToString = MovieGenresDecoder.shared
+    // MARK: - Properties
+    
+    private(set) lazy var genreToString = MovieGenresDecoder.shared
 
     var movie: Movie!
     
@@ -87,6 +89,19 @@ class MovieDetailsViewController: UIViewController {
         self.view.addSubview(self.overviewTextView)
     }
     
+    // MARK: - Configuration
+    
+    private func configureMovieDetails() {
+        self.titleLabel.text = movie.title
+        self.releaseDateLabel.text = "Release date: \(movie.releaseDate.prefix(4))"
+        self.genresLabel.text = "Genres: \(genreToString.decodeMovieGenreIDs(idNumbers: movie.genreIds))"
+        self.overviewTextView.text = "Overview: \(movie.overview)"
+        self.voteAverageLabel.text = "Vote average: \(movie.voteAverage)"
+        let posterPath = "\(Constants.basePosterURL)\(movie.posterPath ?? "")"
+        let url = URL(string: posterPath)
+        self.moviePosterImageView.kf.setImage(with: url)
+    }
+    
     // MARK: - Constraints
     
     private func constraints() {
@@ -121,18 +136,5 @@ class MovieDetailsViewController: UIViewController {
             $0.trailing.equalToSuperview().inset(16)
             $0.bottom.equalToSuperview().inset(32)
         }
-    }
-    
-    // MARK: - Configuration
-    
-    private func configureMovieDetails() {
-        self.titleLabel.text = movie.title
-        self.releaseDateLabel.text = "Release date: \(movie.releaseDate.prefix(4))"
-        self.genresLabel.text = "Genres: \(genreToString.decodeMovieGenreIDs(idNumbers: movie.genreIds))"
-        self.overviewTextView.text = "Overview: \(movie.overview)"
-        self.voteAverageLabel.text = "Vote average: \(movie.voteAverage)"
-        let posterPath = "\(Constants.basePosterURL)\(movie.posterPath ?? "")"
-        let url = URL(string: posterPath)
-        self.moviePosterImageView.kf.setImage(with: url)
     }
 }
