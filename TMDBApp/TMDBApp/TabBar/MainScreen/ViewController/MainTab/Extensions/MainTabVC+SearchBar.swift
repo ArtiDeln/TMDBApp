@@ -26,9 +26,9 @@ extension MainTabViewController: UISearchBarDelegate {
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        isSearching = false
-        searchBar.text = ""
-        searchBar.resignFirstResponder()
+        self.isSearching = false
+        self.searchBar.text = ""
+        self.searchBar.resignFirstResponder()
         self.searchingMovies.removeAll()
         self.loadingIndicator.stopAnimating()
         self.collectionView.reloadData()

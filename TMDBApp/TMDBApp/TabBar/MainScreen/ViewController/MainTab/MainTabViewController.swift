@@ -13,18 +13,11 @@ import Foundation
 
 class MainTabViewController: UIViewController {
     
-    // MARK: - Variables
-    
-    var selectedSections: Set<Int> = [0, 1]
+    // MARK: - Properties
     
     var popularMovies: [Movie] = []
     var upcomingMovies: [Movie] = []
     var searchingMovies: [Movie] = []
-    
-    var isFiltering: Bool {
-           return UserDefaults.standard.bool(forKey: "section1SelectedKey")
-                || UserDefaults.standard.bool(forKey: "section2SelectedKey")
-    }
     
     var isSearching = false
     
@@ -76,17 +69,6 @@ class MainTabViewController: UIViewController {
         self.view.addSubview(self.loadingIndicator)
     }
     
-    // MARK: - Constraints
-    
-    private func constraints() {
-        self.collectionView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        self.loadingIndicator.snp.makeConstraints {
-            $0.center.equalToSuperview()
-        }
-    }
-    
     private func configureNavBar() {
         self.navigationItem.titleView = self.searchBar
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Filter",
@@ -115,7 +97,7 @@ class MainTabViewController: UIViewController {
     
     func searchMovies(with searchText: String) {
         self.loadingIndicator.startAnimating()
-        isSearching = true
+        self.isSearching = true
         let url = Constants.searchingMovieURL
         let parameters: Parameters = ["api_key": Constants.apiKey, "query": searchText]
         AF.request(url, parameters: parameters).responseDecodable(of: MovieData.self,
@@ -151,7 +133,7 @@ class MainTabViewController: UIViewController {
     @objc func fetchMovies() {
         loadingIndicator.startAnimating()
         let group = DispatchGroup()
-        if UserDefaults.standard.bool(forKey: "section1SelectedKey") {
+        if UserDefaults.standard.bool(forKey: Constants.popularKey) {
             group.enter()
             AF.request("\(Constants.baseURL)/popular?api_key=\(Constants.apiKey)")
                 .responseDecodable(of: MovieData.self) { response in
@@ -168,7 +150,7 @@ class MainTabViewController: UIViewController {
                 }
         }
         
-        if UserDefaults.standard.bool(forKey: "section2SelectedKey") {
+        if UserDefaults.standard.bool(forKey: Constants.upcomingKey) {
             group.enter()
             AF.request("\(Constants.baseURL)/upcoming?api_key=\(Constants.apiKey)")
                 .responseDecodable(of: MovieData.self) { response in
@@ -193,9 +175,19 @@ class MainTabViewController: UIViewController {
     }
     
     @objc private func filterButtonTapped() {
-
         let filterViewController = FilterViewController()
         filterViewController.modalPresentationStyle = .fullScreen
         present(filterViewController, animated: true)
+    }
+    
+    // MARK: - Constraints
+    
+    private func constraints() {
+        self.collectionView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        self.loadingIndicator.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
     }
 }

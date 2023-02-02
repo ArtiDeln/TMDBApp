@@ -90,6 +90,7 @@
 		9A07C16F297C339A003F5157 /* MainScreen */ = {
 			isa = PBXGroup;
 			children = (
+				9AAA4B96297E10C10068DE5F /* MovieDetailsVC */,
 				9AFB9FF9297C962200D810DB /* ViewController */,
 			);
 			path = MainScreen;
@@ -231,7 +232,6 @@
 		9AFB9FF9297C962200D810DB /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				9AAA4B96297E10C10068DE5F /* MovieDetailsVC */,
 				9AAA4B8E297DF2AC0068DE5F /* MainTab */,
 			);
 			path = ViewController;

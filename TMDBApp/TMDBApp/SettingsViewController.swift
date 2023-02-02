@@ -27,7 +27,7 @@ class SettingsViewController: UIViewController {
     }
     
     private func setConstraints() {
-        versionLabel.snp.makeConstraints {
+        self.versionLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.centerY.equalToSuperview()
         }

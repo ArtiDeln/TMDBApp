@@ -8,7 +8,8 @@
 import UIKit
 
 class HeaderView: UICollectionReusableView {
-    let titleLabel: UILabel = {
+    
+    private(set) lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17, weight: .medium)
         label.numberOfLines = 0
@@ -22,13 +23,17 @@ class HeaderView: UICollectionReusableView {
         
         self.addSubview(self.titleLabel)
         
-        self.titleLabel.snp.makeConstraints {
-            $0.left.right.equalToSuperview().offset(16)
-            $0.centerY.equalToSuperview()
-        }
+        self.constraints()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func constraints() {
+        self.titleLabel.snp.makeConstraints {
+            $0.left.right.equalToSuperview().offset(16)
+            $0.centerY.equalToSuperview()
+        }
     }
 }

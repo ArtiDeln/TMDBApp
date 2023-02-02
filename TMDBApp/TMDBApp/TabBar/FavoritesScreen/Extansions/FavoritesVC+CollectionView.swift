@@ -77,7 +77,6 @@ extension FavoritesViewController: UICollectionViewDelegate,
         let selectedMovie: Movie
             selectedMovie = favorites[indexPath.item]
         self.showMovieDetails(for: selectedMovie)
-        
     }
     
     func showFavoriteMovieDetails(for movie: Movie) {

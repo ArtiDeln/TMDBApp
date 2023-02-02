@@ -16,7 +16,6 @@ class HomeViewController: UITabBarController {
     }
     
     private func setupTabBar() {
-        
         self.tabBar.isTranslucent = false
         self.tabBar.barTintColor = .systemBackground
         
