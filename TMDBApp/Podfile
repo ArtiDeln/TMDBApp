@@ -7,7 +7,7 @@ target 'TMDBApp' do
 
 pod 'SnapKit'
 pod 'SwiftLint'
-pod 'Kingfisher'
+pod 'Kingfisher', '7.6.1'
 pod 'Alamofire'
 
 end
